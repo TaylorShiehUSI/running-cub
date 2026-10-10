@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>馬兒一年千里目標啟動｜例行團練永久報名與名冊中心</title>
-  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=Q8NiIYqSGJFV21BysqyPxT4ppKbBucEgVkCRJgIboeTSHPbsaelqB79gRm705RDaGOUjTlh1xHVB-gWTN2dxNERZbPUU7l8nVeCJ9JIbF7iDQMoUNjV6t_3cOz7caYapjh0Og4_f_FqIB1ukXpbcyVM6anGL63FhpgqTzZTNptw3sdOkyE-JV5wFBsy9DS5iRviZbdEB5kBrrPLDnmOCjNKrNO8LSYI9tdhW1z9YQNAX7Y_Fa0QMg9eka7FXfBHQJ7LX9Fc3BWj_R8CyJUUOwntHUxzjT0y27cabNzVjI19uP_Bd1-sN7jUaHneJqhER" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pBMU5EbGpORFkzWldReE16bGtOREpoTURBd05qVmtOMlJsT0RVd1lXTXlZakE0WldJMk5qTXdObVV3WWprNU56UVNDeElIRUo2Xzh0T3BBUmdCJmZpbGVuYW1lPWluZGV4Lmh0bWwmb3BpPTEwMzEzNTA1MA"/><style>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=-WQMU547wLjGAnCmyr_MUUJAppIV9a4o8IRWuxLIvWVd759n6FyEfJ1j8MnW585xK6ThG9FKWhy_-KDl9IXM6DlJ3VECMMsx7jzSYPx9N-mfEZawUtE0AEl6HFAcKErOD4p_lJWtYHdJe-Qma9VvgKHDiRHl_vw6e4-SmwYolCD5arTKTJXWqvHh_BPylLK68O4IcEP8LJ7SsKk-RvFyPlvGPSJMWJhXCMWc50kcN0LX6KWD-zvREzEGVxwSOHfveuVI57bHk3VauhOxZjTzGW-Lhr-CULIBejolVGwnYy7lVJnnrgFjMdBVpDfD5QXK" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pBeFl6TTNNekUxWm1ZMFlqZGtOR1ZoTURBd05qVmtOMlUwTURkbU1HRTVOekF4WVdaaE1USTNZV0V6Tm1Jd056TVNDeElIRUo2Xzh0T3BBUmdCJmZpbGVuYW1lPWluZGV4Lmh0bWwmb3BpPTEwMzEzNTA1MA"/><style>
     :root {
       --primary: #f97316;
       --primary-dark: #ea580c;
@@ -507,7 +507,6 @@
           <div class="action-group">
             <button class="btn btn-secondary" onclick="exportToCSV()">📥 匯出 Excel (CSV)</button>
             <button class="btn btn-secondary" onclick="copyLineChainText()">📋 複製 LINE 接龍文字</button>
-            <button class="btn btn-secondary" style="background: #e0f2fe; color: #0369a1;" onclick="syncLocalToSheet()">⬆️ 補送本機暫存名單</button>
           </div>
         </div>
 
@@ -572,6 +571,15 @@
 
           <button type="submit" id="submitBtn" class="btn">🚀 送出接龍報名（自動回填 Google 試算表）</button>
         </form>
+
+        <!-- Hidden Native Form for 100% Reliable Cross-Origin Submission without CORS issues -->
+        <form id="gasHiddenForm" target="gasIframe" method="POST" style="display:none;">
+          <input type="hidden" name="name" id="h_name">
+          <input type="hidden" name="phone" id="h_phone">
+          <input type="hidden" name="pace" id="h_pace">
+          <input type="hidden" name="remarks" id="h_remarks">
+        </form>
+        <iframe name="gasIframe" id="gasIframe" style="display:none;"></iframe>
       </div>
     </div>
 
@@ -647,7 +655,6 @@
 
         <div style="display: flex; gap: 8px;">
           <button class="btn btn-secondary" style="flex: 1;" onclick="refreshFromSheet()">🔄 測試重新拉取試算表名冊</button>
-          <button class="btn btn-secondary" style="flex: 1; background: #e0f2fe; color: #0369a1;" onclick="syncLocalToSheet()">⬆️ 將本機暫存名單補送至試算表</button>
         </div>
       </div>
     </div>
@@ -749,24 +756,13 @@
               });
             }
           }
-          if (newRoster.length > 0) {
-            rosterList = newRoster;
-          } else {
-            const localCached = localStorage.getItem("mode_a_local_roster");
-            if (localCached) {
-              try { rosterList = JSON.parse(localCached); } catch (e) {}
-            }
-          }
+          rosterList = newRoster;
         }
 
         updateUI();
         setSyncStatus("success", "已成功連線 Google 試算表");
       } catch (err) {
         console.warn("GViz fetch failed, fallback to local cache", err);
-        const localCached = localStorage.getItem("mode_a_local_roster");
-        if (localCached) {
-          try { rosterList = JSON.parse(localCached); } catch (e) {}
-        }
         updateUI();
         setSyncStatus("offline", "目前使用本機快取名單");
       }
@@ -795,7 +791,7 @@
         document.getElementById("eventStatusBadge").style.color = "var(--primary-dark)";
         document.getElementById("regClosedNotice").style.display = "none";
         document.getElementById("submitBtn").disabled = false;
-        document.getElementById("submitBtn").innerText = `🚀 送出接龍報名（自動排為第 ${rosterList.length + 1} 號）`;
+        document.getElementById("submitBtn").innerText = `🚀 送出接龍報名（自動回填 Google 試算表）`;
       }
 
       document.getElementById("infoDate").innerText = eventConfig.date;
@@ -866,19 +862,34 @@
 
       showToast("⏳ 正在將報名傳送至 Google 試算表...");
 
+      // 1. Dual submission Method A: Hidden Iframe Form POST (100% immune to CORS)
       try {
-        await fetch(GAS_URL, {
+        const hiddenForm = document.getElementById("gasHiddenForm");
+        hiddenForm.action = GAS_URL;
+        document.getElementById("h_name").value = name;
+        document.getElementById("h_phone").value = phone;
+        document.getElementById("h_pace").value = pace;
+        document.getElementById("h_remarks").value = remarks;
+        hiddenForm.submit();
+      } catch (e1) {
+        console.warn("Iframe submit error", e1);
+      }
+
+      // 2. Dual submission Method B: Fetch POST with text/plain
+      try {
+        fetch(GAS_URL, {
           method: "POST",
           mode: "no-cors",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
           body: JSON.stringify({ name, phone, pace, remarks })
         });
-        showToast(`🎉 報名成功！已發送至 Google 試算表`);
-      } catch (err) {
-        console.error("Post to GAS failed", err);
-        showToast("⚠️ 網路傳送異常，已暫存於本機");
+      } catch (e2) {
+        console.warn("Fetch submit error", e2);
       }
 
+      showToast(`🎉 報名已送出！正在更新試算表...`);
+
+      // Add to local UI temporarily
       rosterList.push({
         id: nextId,
         name: name,
@@ -886,42 +897,14 @@
         remarks: remarks || "-",
         status: status
       });
-      localStorage.setItem("mode_a_local_roster", JSON.stringify(rosterList));
 
       document.getElementById("regForm").reset();
       updateUI();
 
-      setTimeout(() => { loadDataFromGoogleSheet(); }, 2000);
+      // Refresh live from Google Sheet after 2.5 seconds
+      setTimeout(() => { loadDataFromGoogleSheet(); }, 2500);
+
       switchTab('rosterTab');
-    }
-
-    async function syncLocalToSheet() {
-      const localCached = localStorage.getItem("mode_a_local_roster");
-      if (!localCached) {
-        showToast("⚠️ 目前沒有本機暫存名單需要補送！");
-        return;
-      }
-      const list = JSON.parse(localCached);
-      if (list.length === 0) {
-        showToast("⚠️ 本機名單為空！");
-        return;
-      }
-
-      showToast(`⏳ 正在將本機 ${list.length} 筆資料補送至 Google 試算表...`);
-      for (const item of list) {
-        try {
-          await fetch(GAS_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "text/plain;charset=utf-8" },
-            body: JSON.stringify({ name: item.name, pace: item.pace, remarks: item.remarks })
-          });
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      showToast("✅ 已成功補送！正在同步 Google 試算表最新名冊...");
-      setTimeout(() => { loadDataFromGoogleSheet(); }, 2200);
     }
 
     function filterRoster() {
