@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>馬兒一年千里目標啟動｜例行團練永久報名與名冊中心</title>
-  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=q9MjQuTu6BbDR_04tAnHX_kZJr5KsI6b36ajgxgn12d7-_WBQRx8PrsnOhQHf3KDnBqpGVYhaQg6jK88OakKtInPyCxwFyyxATVlrb980m_nXqoomfq8I0iLsWo0WqczssyJBIJa95SzHLWXy1NIdQTP9bpp0n3XQhDzSL3LlHVYSEdNVk0cYaRvMN4gSm7wHFYX_fqb8IJl2J9HvplcR6UQ1sd9IBzQigYyvSA93kLKFJrCW2bH-ZLbWrFosayiGh4aMcJJjz840asEY-KRt5deirji1RHDFFO6dD-EkregBr8V7he-Qew3I6xNnQ48" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pBeVptSmtNMkZrTXpZNE9ERXhaR0l6TURBd05qVmtOemhqTURWaFlUQm1OakE0TXpReFpHRTNNVGN3Wm1Ka01EWVNDeElIRUo2Xzh0T3BBUmdCJmZpbGVuYW1lPWluZGV4Lmh0bWwmb3BpPTEwMzEzNTA1MA"/><style>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=bXFedaDYtkUW7azzEkiYf1N3I5oT0vds-ssvNF1A7xCghYQNA4grs20kAy5PNYIQyHsAOtn6HAqs1CdL5RsWEzBauBmHThwmwz4zyTR2Uh3WkpP0nqY7ctWBO5QkRoJsBzSQadcOl1Xx1J4gPbQD513e62PtjIS5AlbTlxhNqzAQV_Loh8OgJtJKTHeND1lRf5L9qZm2lH8IoUtfzP8yoz6HkoLH7Rye_jcpfqmOSgLSOWbJPE6MA3b83Hy0DWN9tkELql2RCiA0yc-H2xE7CxqbeIdjPYK_PryhILPhDz77bOXLawz944QEmelwEY-5" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pCa1lqZGhZV1U1TkRRMVptSmxOV1F4TURBd05qVmtOMk01TlRFNFl6aGhaakEzWmpVMFpHSmhZMlF4WW1ObVpEUVNDeElIRUo2Xzh0T3BBUmdCJmZpbGVuYW1lPWluZGV4Lmh0bWwmb3BpPTEwMzEzNTA1MA"/><style>
     :root {
       --primary: #f97316;
       --primary-dark: #ea580c;
@@ -665,11 +665,14 @@
           <div class="form-helper">在試算表部署 Web App 後取得的執行網址</div>
         </div>
 
-        <button class="btn btn-secondary" style="width: 100%; margin-bottom: 24px;" onclick="saveConfig()">💾 儲存連線設定並重新整理</button>
+        <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+          <button class="btn btn-secondary" style="flex: 1;" onclick="saveConfig()">💾 儲存連線設定並重新整理</button>
+          <button class="btn btn-secondary" style="flex: 1; background: #e0f2fe; color: #0369a1;" onclick="syncLocalToSheet()">⬆️ 將本機暫存名單補送至試算表</button>
+        </div>
 
         <h3 style="font-size: 16px; margin-bottom: 12px;">📋 試算表端 Apps Script 代碼（複製貼上即可）：</h3>
         <p style="font-size: 13px; color: var(--text-muted);">
-          打開 Google 試算表 → 點選「擴充功能」→「Apps Script」→ 將以下代碼貼上並部署：
+          打開 Google 試算表 → 點選「擴充功能」→「Apps Script」 → 將以下代碼貼上並部署：
         </p>
         <pre id="gasCode">function doPost(e) {
   try {
@@ -677,17 +680,11 @@
     var sheet = ss.getSheetByName("完整名冊_後台");
     var data = JSON.parse(e.postData.contents);
     
-    // 計算序號：目前最後一列 - 1 (標題列) + 1
+    // 計算新序號
     var lastRow = sheet.getLastRow();
     var nextId = lastRow >= 1 ? lastRow : 1;
-    
-    // 檢查名額上限
-    var settingsSheet = ss.getSheetByName("活動設定");
-    var maxCap = 30; // 預設
-    var status = "正取";
-    if (nextId > maxCap) {
-      status = "候補";
-    }
+    var maxCap = 30;
+    var status = (nextId <= maxCap) ? "正取" : "候補";
     
     // 寫入後台：[序號, 時間戳記, 姓名, 手機, 跑量, 備註, 來源, 狀態, 簽到]
     sheet.appendRow([
@@ -708,15 +705,6 @@
     return ContentService.createTextOutput(JSON.stringify({ status: "error", message: err.toString() }))
       .setMimeType(ContentService.MimeType.JSON);
   }
-}
-
-function doGet(e) {
-  // 供前端以 JSON 方式快速撈取公開名冊
-  var ss = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = ss.getSheetByName("公開名冊_前端展示");
-  var data = sheet.getDataRange().getValues();
-  return ContentService.createTextOutput(JSON.stringify(data))
-    .setMimeType(ContentService.MimeType.JSON);
 }</pre>
         <button class="btn btn-secondary" onclick="copyGasCode()">📋 一鍵複製 Apps Script 代碼</button>
       </div>
@@ -733,7 +721,9 @@ function doGet(e) {
     let GAS_URL = localStorage.getItem("event_gas_url") || "";
 
     document.getElementById("sheetIdInput").value = SPREADSHEET_ID;
-    document.getElementById("gasUrlInput").value = GAS_URL;
+    if (GAS_URL) {
+      document.getElementById("gasUrlInput").value = GAS_URL;
+    }
 
     // Local in-memory state
     let eventConfig = {
@@ -805,27 +795,27 @@ function doGet(e) {
         if (resRoster.ok) {
           const rosterCsv = await resRoster.text();
           const rows = parseCSV(rosterCsv);
-          rosterList = [];
+          const newRoster = [];
           // Skip header row
           for (let i = 1; i < rows.length; i++) {
             const r = rows[i];
-            if (r.length >= 2 && r[1]) {
-              rosterList.push({
-                id: r[0] || (rosterList.length + 1),
+            if (r.length >= 2 && r[1] && r[1].trim()) {
+              newRoster.push({
+                id: r[0] || (newRoster.length + 1),
                 name: r[1],
                 pace: r[2] || "-",
                 remarks: r[3] || "-",
-                status: r[4] || (rosterList.length + 1 <= eventConfig.capacity ? "正取" : "候補")
+                status: r[4] || (newRoster.length + 1 <= eventConfig.capacity ? "正取" : "候補")
               });
             }
           }
+          rosterList = newRoster;
         }
 
         updateUI();
-        setSyncStatus("success", "已成功同步 Google 試算表");
+        setSyncStatus("success", "已成功連線 Google 試算表");
       } catch (err) {
         console.warn("GViz fetch failed (likely private or offline), fallback to local cache", err);
-        // Load from local storage if network blocked
         const localCached = localStorage.getItem("mode_a_local_roster");
         if (localCached) {
           try { rosterList = JSON.parse(localCached); } catch (e) {}
@@ -842,7 +832,6 @@ function doGet(e) {
     }
 
     function updateUI() {
-      // Update Event Header & Settings
       document.getElementById("eventTitle").innerText = eventConfig.title;
       document.getElementById("eventDateDisplay").innerText = eventConfig.date;
       document.getElementById("eventTimeDisplay").innerText = eventConfig.time;
@@ -850,7 +839,6 @@ function doGet(e) {
       document.getElementById("eventMotto").innerText = `✨ ${eventConfig.motto}`;
       document.getElementById("eventStatusBadge").innerText = eventConfig.status;
 
-      // Status pill color
       if (eventConfig.status.includes("截止") || eventConfig.status.includes("結束")) {
         document.getElementById("eventStatusBadge").style.color = "#ef4444";
         document.getElementById("regClosedNotice").style.display = "block";
@@ -863,7 +851,6 @@ function doGet(e) {
         document.getElementById("submitBtn").innerText = `🚀 送出接龍報名（自動排為第 ${rosterList.length + 1} 號）`;
       }
 
-      // Update Info Tab
       document.getElementById("infoDate").innerText = eventConfig.date;
       document.getElementById("infoTime").innerText = eventConfig.time;
       document.getElementById("infoLocation").innerText = eventConfig.location;
@@ -890,7 +877,7 @@ function doGet(e) {
             <td colspan="5">
               <div class="empty-state">
                 <div class="empty-state-icon">👟</div>
-                <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">目前名冊為空白</div>
+                <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">目前試算表無資料</div>
                 <div>歡迎前往「✍️ 線上報名接龍」登記成為第 1 位跑友！</div>
               </div>
             </td>
@@ -914,7 +901,6 @@ function doGet(e) {
         });
       }
 
-      // Counters
       const total = rosterList.length;
       document.getElementById("totalCount").innerText = total;
     }
@@ -931,22 +917,26 @@ function doGet(e) {
       const nextId = rosterList.length + 1;
       const status = nextId <= eventConfig.capacity ? "正取" : "候補";
 
-      // If GAS_URL is configured, POST to Google Apps Script
+      // POST to Google Apps Script using text/plain (CORS safelisted)
       if (GAS_URL) {
         showToast("⏳ 正在將報名傳送至 Google 試算表...");
         try {
           await fetch(GAS_URL, {
             method: "POST",
             mode: "no-cors",
-            headers: { "Content-Type": "application/json" },
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
             body: JSON.stringify({ name, phone, pace, remarks })
           });
+          showToast(`🎉 報名成功！已寫入 Google 試算表`);
         } catch (err) {
           console.error("Post to GAS failed", err);
+          showToast("⚠️ 網路傳送異常，已暫存於本機");
         }
+      } else {
+        showToast("⚠️ 尚未設定 Apps Script 網址，暫存於本機");
       }
 
-      // Add to local state
+      // Add to local list immediately
       rosterList.push({
         id: nextId,
         name: name,
@@ -959,8 +949,46 @@ function doGet(e) {
       document.getElementById("regForm").reset();
       updateUI();
 
-      showToast(`🎉 報名成功！已將 ${name} 排入第 ${nextId} 號（${status}）`);
+      // Delay 1.5s then refresh from Google Sheet
+      if (GAS_URL) {
+        setTimeout(() => { loadDataFromGoogleSheet(); }, 1800);
+      }
+
       switchTab('rosterTab');
+    }
+
+    // Sync local cached roster to GAS
+    async function syncLocalToSheet() {
+      if (!GAS_URL) {
+        showToast("❌ 請先填寫並儲存 Apps Script 網址！");
+        return;
+      }
+      const localCached = localStorage.getItem("mode_a_local_roster");
+      if (!localCached) {
+        showToast("⚠️ 目前沒有本機暫存名單需要補送！");
+        return;
+      }
+      const list = JSON.parse(localCached);
+      if (list.length === 0) {
+        showToast("⚠️ 本機名單為空！");
+        return;
+      }
+
+      showToast(`⏳ 正在將本機 ${list.length} 筆資料補送至試算表...`);
+      for (const item of list) {
+        try {
+          await fetch(GAS_URL, {
+            method: "POST",
+            mode: "no-cors",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ name: item.name, pace: item.pace, remarks: item.remarks })
+          });
+        } catch (e) {
+          console.error(e);
+        }
+      }
+      showToast("✅ 已完成補送！正在重新整理試算表資料...");
+      setTimeout(() => { loadDataFromGoogleSheet(); }, 2000);
     }
 
     function filterRoster() {
