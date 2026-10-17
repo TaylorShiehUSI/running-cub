@@ -2,981 +2,282 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>馬兒一年千里目標啟動｜例行團練永久報名與名冊中心</title>
-  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=-WQMU547wLjGAnCmyr_MUUJAppIV9a4o8IRWuxLIvWVd759n6FyEfJ1j8MnW585xK6ThG9FKWhy_-KDl9IXM6DlJ3VECMMsx7jzSYPx9N-mfEZawUtE0AEl6HFAcKErOD4p_lJWtYHdJe-Qma9VvgKHDiRHl_vw6e4-SmwYolCD5arTKTJXWqvHh_BPylLK68O4IcEP8LJ7SsKk-RvFyPlvGPSJMWJhXCMWc50kcN0LX6KWD-zvREzEGVxwSOHfveuVI57bHk3VauhOxZjTzGW-Lhr-CULIBejolVGwnYy7lVJnnrgFjMdBVpDfD5QXK" charset="UTF-8"></script><link rel="stylesheet" crossorigin="anonymous" href="https://gc.kis.v2.scr.kaspersky-labs.com/E3E8934C-235A-4B0E-825A-35A08381A191/abn/main.css?attr=aHR0cHM6Ly9jb250cmlidXRpb24udXNlcmNvbnRlbnQuZ29vZ2xlLmNvbS9kb3dubG9hZD9jPUNneGlZWEprWDNOMGIzSmhaMlVTVUJJTmNtVnpjRzl1YzJWZlpHRjBZUm9fQ2pBeFl6TTNNekUxWm1ZMFlqZGtOR1ZoTURBd05qVmtOMlUwTURkbU1HRTVOekF4WVdaaE1USTNZV0V6Tm1Jd056TVNDeElIRUo2Xzh0T3BBUmdCJmZpbGVuYW1lPWluZGV4Lmh0bWwmb3BpPTEwMzEzNTA1MA"/><style>
-    :root {
-      --primary: #f97316;
-      --primary-dark: #ea580c;
-      --primary-light: #ffedd5;
-      --secondary: #0ea5e9;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --bg: #f8fafc;
-      --card-bg: #ffffff;
-      --text-main: #0f172a;
-      --text-muted: #64748b;
-      --border: #e2e8f0;
-      --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-      --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-      --radius: 12px;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans TC", sans-serif;
-    }
-
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>🏃 馬兒一年千里目標啟動 第26次團練 - 線上報名</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- LINE LIFF SDK -->
+  <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+  <style>
     body {
-      background-color: var(--bg);
-      color: var(--text-main);
-      line-height: 1.6;
-      padding-bottom: 60px;
+      background-color: #F8FAFC;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
-
-    .container {
-      max-width: 880px;
-      margin: 0 auto;
-      padding: 16px;
+    .line-green {
+      background-color: #06C755;
     }
-
-    /* Top sync bar */
-    .sync-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      background: #ffffff;
-      border: 1px solid var(--border);
-      padding: 10px 16px;
-      border-radius: 8px;
-      margin-bottom: 16px;
-      font-size: 13px;
+    .line-green:hover {
+      background-color: #05b34c;
     }
-
-    .sync-status {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-weight: 500;
-    }
-
-    .sync-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background: var(--success);
-      display: inline-block;
-    }
-    .sync-dot.loading { background: var(--warning); animation: pulse 1s infinite; }
-    .sync-dot.offline { background: var(--text-muted); }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.4; }
-    }
-
-    /* Header Banner */
-    .header {
-      background: linear-gradient(135deg, #ea580c 0%, #f97316 50%, #fb923c 100%);
-      color: white;
-      padding: 32px 24px;
-      border-radius: var(--radius);
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-lg);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .header::after {
-      content: "🏃";
-      position: absolute;
-      right: 16px;
-      bottom: -10px;
-      font-size: 88px;
-      opacity: 0.22;
-      pointer-events: none;
-    }
-
-    .badge-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 12px;
-      flex-wrap: wrap;
-    }
-
-    .badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.25);
-      backdrop-filter: blur(4px);
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 13px;
-      font-weight: 600;
-      letter-spacing: 0.5px;
-    }
-
-    .status-pill {
-      background: #ffffff;
-      color: var(--primary-dark);
-      padding: 4px 12px;
-      border-radius: 9999px;
-      font-size: 13px;
-      font-weight: 700;
-    }
-
-    .header h1 {
-      font-size: 26px;
-      font-weight: 800;
-      margin-bottom: 8px;
-      line-height: 1.3;
-    }
-
-    .header p {
-      font-size: 15px;
-      opacity: 0.95;
-    }
-
-    .motto {
-      margin-top: 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      background: rgba(0, 0, 0, 0.18);
-      padding: 6px 14px;
-      border-radius: 8px;
-      font-size: 14px;
-      font-weight: 500;
-    }
-
-    /* Navigation Tabs */
-    .tabs {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 20px;
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 4px;
-      overflow-x: auto;
-    }
-
-    .tab-btn {
-      background: none;
-      border: none;
-      padding: 10px 18px;
-      font-size: 15px;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-radius: 8px;
-      transition: all 0.2s ease;
-      white-space: nowrap;
-    }
-
-    .tab-btn:hover {
-      color: var(--primary);
-      background: var(--primary-light);
-    }
-
-    .tab-btn.active {
-      color: white;
-      background: var(--primary);
-    }
-
-    /* Cards */
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius);
-      padding: 24px;
-      margin-bottom: 20px;
-      border: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .card-title {
-      font-size: 18px;
-      font-weight: 700;
-      margin-bottom: 16px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--text-main);
-    }
-
-    /* Stats Grid */
-    .stats-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-      gap: 12px;
-      margin-bottom: 20px;
-    }
-
-    .stat-card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 16px;
-      text-align: center;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .stat-num {
-      font-size: 26px;
-      font-weight: 800;
-      color: var(--primary);
-      line-height: 1.2;
-    }
-
-    .stat-label {
-      font-size: 13px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    /* Info List */
-    .info-list {
-      list-style: none;
-      display: grid;
-      gap: 12px;
-    }
-
-    .info-item {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-      font-size: 15px;
-    }
-
-    .info-icon {
-      font-size: 18px;
-      flex-shrink: 0;
-      margin-top: 2px;
-    }
-
-    .info-content strong {
-      color: var(--text-main);
-    }
-
-    /* Form Styles */
-    .form-group {
-      margin-bottom: 16px;
-    }
-
-    .form-label {
-      display: block;
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 6px;
-      color: var(--text-main);
-    }
-
-    .form-input, .form-select {
-      width: 100%;
-      padding: 10px 14px;
-      border: 1.5px solid var(--border);
-      border-radius: 8px;
-      font-size: 15px;
-      color: var(--text-main);
-      outline: none;
-      transition: border-color 0.2s;
-    }
-
-    .form-input:focus, .form-select:focus {
-      border-color: var(--primary);
-    }
-
-    .form-helper {
-      font-size: 12px;
-      color: var(--text-muted);
-      margin-top: 4px;
-    }
-
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      background: var(--primary);
-      color: white;
-      border: none;
-      padding: 12px 24px;
-      font-size: 15px;
-      font-weight: 600;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      width: 100%;
-    }
-
-    .btn:hover { background: var(--primary-dark); }
-    .btn:active { transform: scale(0.99); }
-    .btn:disabled {
-      background: #cbd5e1;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .btn-secondary {
-      background: #f1f5f9;
-      color: #334155;
-      width: auto;
-      padding: 8px 16px;
-      font-size: 13px;
-    }
-    .btn-secondary:hover { background: #e2e8f0; }
-
-    /* Table Toolbar */
-    .table-toolbar {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 16px;
-    }
-
-    .search-input {
-      padding: 8px 14px;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      font-size: 14px;
-      min-width: 220px;
-      outline: none;
-    }
-    .search-input:focus { border-color: var(--primary); }
-
-    .action-group {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-
-    /* Table Styling */
-    .table-responsive {
-      overflow-x: auto;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      text-align: left;
-      font-size: 14px;
-    }
-
-    th {
-      background: #f8fafc;
-      color: var(--text-muted);
-      font-weight: 600;
-      padding: 12px 14px;
-      border-bottom: 1.5px solid var(--border);
-      white-space: nowrap;
-    }
-
-    td {
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-      color: var(--text-main);
-    }
-
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: #fffbf5; }
-
-    .status-badge-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: #dcfce7;
-      color: #15803d;
-      font-weight: 600;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-
-    .status-badge-waiting {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: #fef3c7;
-      color: #b45309;
-      font-weight: 600;
-      font-size: 12px;
-      padding: 2px 8px;
-      border-radius: 4px;
-    }
-
-    .empty-state {
-      text-align: center;
-      padding: 40px 16px;
-      color: var(--text-muted);
-    }
-    .empty-state-icon { font-size: 40px; margin-bottom: 8px; }
-
-    .toast {
-      position: fixed;
-      bottom: 24px;
-      right: 24px;
-      background: #1e293b;
-      color: white;
-      padding: 12px 20px;
-      border-radius: 8px;
-      box-shadow: var(--shadow-lg);
-      font-size: 14px;
-      display: none;
-      z-index: 1000;
-      animation: fadeIn 0.3s ease;
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .tab-content { display: none; }
-    .tab-content.active { display: block; }
   </style>
 </head>
-<body>
+<body class="min-h-screen text-slate-800 pb-12">
 
-  <div class="container">
-
-    <!-- Top Sync Status Bar -->
-    <div class="sync-bar">
-      <div class="sync-status">
-        <span class="sync-dot" id="syncDot"></span>
-        <span id="syncText">Google 試算表連線中...</span>
+  <!-- 頂部導覽列 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 px-4 py-3 shadow-sm">
+    <div class="max-w-xl mx-auto flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <span class="text-xl">🏃</span>
+        <div>
+          <div class="text-xs font-semibold text-emerald-600">第 26 次例行團練</div>
+          <div class="text-sm font-bold text-slate-800">馬兒一年千里目標啟動</div>
+        </div>
       </div>
-      <div>
-        <button class="btn btn-secondary" style="padding: 4px 10px; font-size: 12px;" onclick="refreshFromSheet()">🔄 重新整理名單</button>
+      <div id="conn-pill" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
+        <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+        <span id="conn-text">連線同步中</span>
       </div>
     </div>
+  </header>
 
-    <!-- Header Banner -->
-    <header class="header">
-      <div class="badge-row">
-        <span class="badge" id="eventBadge">第 26 次例行團練 🏃</span>
-        <span class="status-pill" id="eventStatusBadge">開放報名中</span>
-      </div>
-      <h1 id="eventTitle">🏃 馬兒一年千里目標啟動 第26次團練</h1>
-      <p id="eventSubtitle">來都會歡樂跑步，請踴躍報名！大家一起累積里程！</p>
-      <div class="motto" id="eventMotto">✨ 只有累積，沒有奇蹟！</div>
-    </header>
+  <main class="max-w-xl mx-auto px-4 mt-4 space-y-4">
 
-    <!-- Stats -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-num" id="totalCount">0</div>
-        <div class="stat-label">目前已接龍人數</div>
+    <!-- 活動主視覺資訊卡 -->
+    <section class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-2xl p-5 shadow-sm">
+      <div class="flex items-center justify-between mb-2">
+        <span class="px-2.5 py-0.5 rounded-full text-xs bg-white/20 font-medium tracking-wide">
+          都會公園歡樂跑
+        </span>
+        <span class="text-xs text-emerald-100 font-mono">10/14 (三) 06:00 起跑</span>
       </div>
-      <div class="stat-card">
-        <div class="stat-num" id="maxCapacity">30</div>
-        <div class="stat-label">名額上限</div>
+      <h1 class="text-xl font-bold mb-1">🏃 馬兒一年千里目標啟動 第26次團練</h1>
+      <p class="text-xs text-emerald-100 mb-3">來都會歡樂跑步，請踴躍報名！大家一起累積里程！</p>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-black/15 text-xs text-amber-300 font-medium">
+        <span>✨</span> 只有累積，沒有奇蹟！
       </div>
-      <div class="stat-card">
-        <div class="stat-num" id="eventDateDisplay">10/14(三)</div>
-        <div class="stat-label">團練日期</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-num" id="eventTimeDisplay">06:00</div>
-        <div class="stat-label">集合起跑時間</div>
-      </div>
-    </div>
 
-    <!-- Navigation Tabs -->
-    <nav class="tabs">
-      <button class="tab-btn active" onclick="switchTab('rosterTab')">📋 名冊即時查詢 (Display on Web)</button>
-      <button class="tab-btn" onclick="switchTab('registerTab')">✍️ 線上報名接龍</button>
-      <button class="tab-btn" onclick="switchTab('infoTab')">ℹ️ 活動詳細說明</button>
-      <button class="tab-btn" onclick="switchTab('backendTab')">🔗 雲端資料庫狀態</button>
-    </nav>
+      <!-- 統計指標看板 -->
+      <div class="grid grid-cols-4 gap-2 mt-4 text-center">
+        <div class="bg-white/10 rounded-xl p-2 backdrop-blur-sm">
+          <div id="stat-count" class="text-lg font-bold">0</div>
+          <div class="text-[10px] text-emerald-100">目前報名</div>
+        </div>
+        <div class="bg-white/10 rounded-xl p-2 backdrop-blur-sm">
+          <div class="text-lg font-bold">30</div>
+          <div class="text-[10px] text-emerald-100">名額上限</div>
+        </div>
+        <div class="bg-white/10 rounded-xl p-2 backdrop-blur-sm">
+          <div class="text-lg font-bold">10/14</div>
+          <div class="text-[10px] text-emerald-100">團練日期</div>
+        </div>
+        <div class="bg-white/10 rounded-xl p-2 backdrop-blur-sm">
+          <div class="text-lg font-bold">06:00</div>
+          <div class="text-[10px] text-emerald-100">集合時間</div>
+        </div>
+      </div>
+    </section>
 
-    <!-- TAB 1: Roster Display on Web -->
-    <div id="rosterTab" class="tab-content active">
-      <div class="card">
-        <div class="table-toolbar">
+    <!-- 跑友身分區塊（LIFF 登入後顯示） -->
+    <section id="liff-profile-card" class="hidden bg-white border border-slate-200 rounded-2xl p-4 shadow-sm">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-3">
+          <img id="user-avatar" src="" class="w-10 h-10 rounded-full border border-slate-200 object-cover" />
           <div>
-            <h2 class="card-title">📊 團練接龍名冊（即時雲端同步）</h2>
-            <p style="font-size: 13px; color: var(--text-muted);">
-              模式 A 永久入口：資料直接與 Google 試算表雙向同步
-            </p>
-          </div>
-          <div class="action-group">
-            <button class="btn btn-secondary" onclick="exportToCSV()">📥 匯出 Excel (CSV)</button>
-            <button class="btn btn-secondary" onclick="copyLineChainText()">📋 複製 LINE 接龍文字</button>
+            <div class="text-[11px] text-slate-400">LINE 已驗證身份</div>
+            <div id="user-name" class="text-sm font-bold text-slate-800">讀取中...</div>
           </div>
         </div>
-
-        <div style="margin-bottom: 14px;">
-          <input type="text" id="searchInput" class="search-input" placeholder="🔍 搜尋跑友姓名或備註..." oninput="filterRoster()">
-        </div>
-
-        <div class="table-responsive">
-          <table id="rosterTable">
-            <thead>
-              <tr>
-                <th style="width: 70px;">序號</th>
-                <th>跑友姓名 / 暱稱</th>
-                <th>預計跑量 / 配速</th>
-                <th>備註</th>
-                <th>狀態</th>
-              </tr>
-            </thead>
-            <tbody id="rosterBody">
-              <!-- Dynamically populated -->
-            </tbody>
-          </table>
-        </div>
+        <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium">LINE LIFF 連線</span>
       </div>
-    </div>
+    </section>
 
-    <!-- TAB 2: Register Form -->
-    <div id="registerTab" class="tab-content">
-      <div class="card">
-        <h2 class="card-title">✍️ 線上報名接龍</h2>
-        <div id="regClosedNotice" style="display: none; background: #fee2e2; border-left: 4px solid #ef4444; padding: 12px; border-radius: 4px; color: #991b1b; font-size: 14px; margin-bottom: 16px;">
-          ⚠️ 本場次活動目前非開放報名狀態，暫停受理報名。
+    <!-- 報名表單區塊 -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <h2 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-1.5">
+        <span>✍️</span> 線上接龍報名表單
+      </h2>
+
+      <form id="reg-form" class="space-y-3.5">
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">
+            跑友姓名 / 暱稱 <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="input-nickname" required maxlength="20"
+            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="請輸入稱呼">
         </div>
 
-        <form id="regForm" onsubmit="handleRegister(event)">
-          <div class="form-group">
-            <label class="form-label" for="runnerName">姓名或群組暱稱 <span style="color: #ef4444;">*</span></label>
-            <input type="text" id="runnerName" class="form-input" placeholder="例如：淑華、小明" required>
-            <div class="form-helper">請填寫 LINE 群組內大家認識的稱呼</div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="runnerPhone">手機號碼（選填，緊急聯絡用，不對外公開）</label>
-            <input type="tel" id="runnerPhone" class="form-input" placeholder="0912-345678">
-            <div class="form-helper">僅供團長後台緊急聯絡，公開名冊會自動隱藏</div>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="pacePlan">預計跑量與配速</label>
-            <select id="pacePlan" class="form-select">
-              <option value="歡樂跑 5K (輕鬆配速 6:30~7:00)">歡樂跑 5K (輕鬆配速 6:30~7:00)</option>
-              <option value="穩定巡航 10K (配速 6:00)">穩定巡航 10K (配速 6:00)</option>
-              <option value="進階挑戰 12~15K (配速 5:30)">進階挑戰 12~15K (配速 5:30)</option>
-              <option value="自行配速 / 健走組">自行配速 / 健走組</option>
-            </select>
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="remarks">備註說明（選填）</label>
-            <input type="text" id="remarks" class="form-input" placeholder="例如：預計準時出發、開車可載 2 人等">
-          </div>
-
-          <button type="submit" id="submitBtn" class="btn">🚀 送出接龍報名（自動回填 Google 試算表）</button>
-        </form>
-
-        <!-- Hidden Native Form for 100% Reliable Cross-Origin Submission without CORS issues -->
-        <form id="gasHiddenForm" target="gasIframe" method="POST" style="display:none;">
-          <input type="hidden" name="name" id="h_name">
-          <input type="hidden" name="phone" id="h_phone">
-          <input type="hidden" name="pace" id="h_pace">
-          <input type="hidden" name="remarks" id="h_remarks">
-        </form>
-        <iframe name="gasIframe" id="gasIframe" style="display:none;"></iframe>
-      </div>
-    </div>
-
-    <!-- TAB 3: Event Info -->
-    <div id="infoTab" class="tab-content">
-      <div class="card">
-        <h2 class="card-title">📍 活動行程與注意事項</h2>
-        <ul class="info-list">
-          <li class="info-item">
-            <span class="info-icon">📅</span>
-            <div class="info-content">
-              <strong>活動日期</strong>
-              <div id="infoDate">10/14（三）</div>
-            </div>
-          </li>
-          <li class="info-item">
-            <span class="info-icon">⏰</span>
-            <div class="info-content">
-              <strong>集合時間</strong>
-              <div id="infoTime">早上 06:00 準時起跑（請提前 10 分鐘抵達熱身）</div>
-            </div>
-          </li>
-          <li class="info-item">
-            <span class="info-icon">📍</span>
-            <div class="info-content">
-              <strong>集合地點</strong>
-              <div id="infoLocation">都會公園歡樂跑步集合點</div>
-            </div>
-          </li>
-          <li class="info-item">
-            <span class="info-icon">👥</span>
-            <div class="info-content">
-              <strong>名額限制</strong>
-              <div id="infoCap">30 人（額滿自動轉為候補）</div>
-            </div>
-          </li>
-          <li class="info-item">
-            <span class="info-icon">🎯</span>
-            <div class="info-content">
-              <strong>核心精神</strong>
-              <div id="infoMotto">「只有累積，沒有奇蹟！」馬兒一年千里目標持續推進！</div>
-            </div>
-          </li>
-          <li class="info-item">
-            <span class="info-icon">🎒</span>
-            <div class="info-content">
-              <strong>裝備提醒</strong>
-              <div id="infoNotice">跑鞋、遮陽帽、個人補給水瓶、換洗衣物與擦汗毛巾。</div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- TAB 4: Cloud Status -->
-    <div id="backendTab" class="tab-content">
-      <div class="card">
-        <h2 class="card-title">🔗 雲端資料庫連線狀態</h2>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">
-          此網頁程式碼底層已直接內建綁定您的 Google 試算表與正確的 Apps Script API！
-        </p>
-
-        <div style="background: #f8fafc; border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 20px;">
-          <div style="margin-bottom: 10px;">
-            <strong>📊 綁定之 Google 試算表 ID：</strong><br>
-            <code style="color: var(--primary-dark); word-break: break-all;">1stL40m7QoE2x9p_JbmX-0VKtmLC8b7gnBkw1R7jmloM</code>
-          </div>
-          <div>
-            <strong>⚡ 綁定之正確 Apps Script API：</strong><br>
-            <code style="color: var(--primary-dark); font-size: 12px; word-break: break-all;">https://script.google.com/macros/s/AKfycbxTvslnioyIfPD6MPVPPBE7VNk3Y_A7fsFyHz04v8rwHJlIOzqpgIbU5gh0UhVpcgKHsw/exec</code>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">
+            預計跑量 / 配速 <span class="text-red-500">*</span>
+          </label>
+          <input type="text" id="input-plan" required maxlength="50"
+            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="例：10K / 6分速">
+          <div class="flex gap-1.5 mt-2">
+            <button type="button" onclick="setPresetPlan('5K / 歡樂跑')" class="text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-slate-600 transition">5K 歡樂跑</button>
+            <button type="button" onclick="setPresetPlan('10K / 6分速')" class="text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-slate-600 transition">10K 6分速</button>
+            <button type="button" onclick="setPresetPlan('12K / 5分半')" class="text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-slate-600 transition">12K 5分半</button>
           </div>
         </div>
 
-        <div style="display: flex; gap: 8px;">
-          <button class="btn btn-secondary" style="flex: 1;" onclick="refreshFromSheet()">🔄 測試重新拉取試算表名冊</button>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">
+            備註（選填）
+          </label>
+          <input type="text" id="input-note" maxlength="100"
+            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            placeholder="如攜伴、特殊提醒">
         </div>
+
+        <!-- 提示訊息 -->
+        <div id="form-msg" class="hidden p-3 rounded-xl text-xs font-medium"></div>
+
+        <button type="submit" id="btn-submit"
+          class="w-full line-green text-white font-medium py-3 rounded-xl shadow transition duration-150 flex items-center justify-center gap-1.5">
+          <span id="btn-text">確認送出報名</span>
+        </button>
+      </form>
+    </section>
+
+    <!-- 即時接龍名冊 -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
+      <div class="flex items-center justify-between mb-3">
+        <div>
+          <h2 class="text-sm font-bold text-slate-800">📊 即時團練名冊</h2>
+          <p class="text-[11px] text-slate-400">雙向同步自 Google 試算表</p>
+        </div>
+        <button onclick="fetchRoster()" class="text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1 rounded-lg hover:bg-emerald-50 transition">
+          🔄 重新整理
+        </button>
       </div>
-    </div>
 
-  </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead>
+            <tr class="border-b border-slate-100 text-slate-400">
+              <th class="py-2 px-1">#</th>
+              <th class="py-2 px-2">姓名</th>
+              <th class="py-2 px-2">跑量 / 配速</th>
+              <th class="py-2 px-2">備註</th>
+              <th class="py-2 px-1 text-right">狀態</th>
+            </tr>
+          </thead>
+          <tbody id="roster-tbody" class="divide-y divide-slate-100 text-slate-600">
+            <tr>
+              <td colspan="5" class="py-6 text-center text-slate-400">名冊載入中...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-  <div id="toast" class="toast"></div>
+    <!-- 注意事項與說明 -->
+    <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm text-xs text-slate-600 space-y-2">
+      <h3 class="font-bold text-slate-800 text-sm">📍 行程與注意事項</h3>
+      <p>• <strong>集合時間</strong>：早上 06:00 準時起跑（請提前 10 分鐘熱身）</p>
+      <p>• <strong>集合地點</strong>：都會公園歡樂跑步集合點</p>
+      <p>• <strong>裝備提醒</strong>：跑鞋、遮陽帽、個人補給水瓶、換洗衣物與毛巾。</p>
+      <p>• <strong>名額規則</strong>：上限 30 人，額滿自動轉為候補。</p>
+    </section>
+
+  </main>
 
   <script>
-    // HARDCODED VERIFIED CONSTANTS
-    const SPREADSHEET_ID = "1stL40m7QoE2x9p_JbmX-0VKtmLC8b7gnBkw1R7jmloM";
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbxTvslnioyIfPD6MPVPPBE7VNk3Y_A7fsFyHz04v8rwHJlIOzqpgIbU5gh0UhVpcgKHsw/exec";
+    // ⚙️ 系統常數配置
+    const LIFF_ID = "2012065855-mDY8iWmz";
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbylG68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec";
+    const ACTIVITY_ID = "running-cub-run26";
 
-    // Auto-update localStorage with the verified correct URL
-    localStorage.setItem("event_sheet_id", SPREADSHEET_ID);
-    localStorage.setItem("event_gas_url", GAS_URL);
-
-    // Local in-memory state
-    let eventConfig = {
-      title: "🏃 馬兒一年千里目標啟動 第26次團練",
-      date: "10/14 (三)",
-      time: "06:00",
-      location: "都會公園歡樂跑步集合點",
-      motto: "只有累積，沒有奇蹟！",
-      capacity: 30,
-      status: "開放報名中",
-      notice: "跑鞋、遮陽帽、個人補給水瓶、換洗衣物與擦汗毛巾。身體不適者請充分休息。"
+    let currentUser = {
+      lineUserId: "",
+      nickname: "",
+      avatarUrl: ""
     };
 
-    let rosterList = [];
-
-    // Parse CSV line safely
-    function parseCSV(text) {
-      const lines = text.split(/\r\n|\n/).filter(l => l.trim().length > 0);
-      return lines.map(line => {
-        const matches = [];
-        let inQuotes = false;
-        let token = "";
-        for (let i = 0; i < line.length; i++) {
-          const char = line[i];
-          if (char === '"') {
-            inQuotes = !inQuotes;
-          } else if (char === ',' && !inQuotes) {
-            matches.push(token.trim().replace(/^"|"$/g, ''));
-            token = "";
-          } else {
-            token += char;
-          }
-        }
-        matches.push(token.trim().replace(/^"|"$/g, ''));
-        return matches;
-      });
+    function setPresetPlan(plan) {
+      document.getElementById('input-plan').value = plan;
     }
 
-    // Fetch live from Google Sheet (via GViz CSV export)
-    async function loadDataFromGoogleSheet() {
-      setSyncStatus("loading", "正在同步 Google 試算表...");
-
+    // 1. 初始化 LIFF
+    async function initApp() {
       try {
-        // 1. Fetch Event Settings
-        const settingsUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("活動設定")}`;
-        const resSettings = await fetch(settingsUrl);
-        if (resSettings.ok) {
-          const csvText = await resSettings.text();
-          const rows = parseCSV(csvText);
-          rows.forEach(r => {
-            if (r.length >= 2) {
-              const k = r[0].trim();
-              const v = r[1].trim();
-              if (k.includes("活動名稱")) eventConfig.title = v;
-              if (k.includes("團練日期") || k.includes("活動日期")) eventConfig.date = v;
-              if (k.includes("集合時間")) eventConfig.time = v;
-              if (k.includes("集合地點")) eventConfig.location = v;
-              if (k.includes("核心標語") || k.includes("標語")) eventConfig.motto = v;
-              if (k.includes("名額上限")) eventConfig.capacity = parseInt(v, 10) || 30;
-              if (k.includes("活動狀態")) eventConfig.status = v;
-              if (k.includes("注意事項")) eventConfig.notice = v;
-            }
-          });
-        }
+        await liff.init({ liffId: LIFF_ID });
+        if (liff.isLoggedIn()) {
+          const profile = await liff.getProfile();
+          currentUser.lineUserId = profile.userId;
+          currentUser.nickname = profile.displayName;
+          currentUser.avatarUrl = profile.pictureUrl || "";
 
-        // 2. Fetch Public Roster
-        const rosterUrl = `https://docs.google.com/spreadsheets/d/${SPREADSHEET_ID}/gviz/tq?tqx=out:csv&sheet=${encodeURIComponent("公開名冊_前端展示")}`;
-        const resRoster = await fetch(rosterUrl);
-        if (resRoster.ok) {
-          const rosterCsv = await resRoster.text();
-          const rows = parseCSV(rosterCsv);
-          const newRoster = [];
-          // Skip header row
-          for (let i = 1; i < rows.length; i++) {
-            const r = rows[i];
-            if (r.length >= 2 && r[1] && r[1].trim()) {
-              newRoster.push({
-                id: r[0] || (newRoster.length + 1),
-                name: r[1],
-                pace: r[2] || "-",
-                remarks: r[3] || "-",
-                status: r[4] || (newRoster.length + 1 <= eventConfig.capacity ? "正取" : "候補")
-              });
-            }
+          // 顯示使用者卡片
+          document.getElementById('liff-profile-card').classList.remove('hidden');
+          document.getElementById('user-name').innerText = currentUser.nickname;
+          if (currentUser.avatarUrl) {
+            document.getElementById('user-avatar').src = currentUser.avatarUrl;
           }
-          rosterList = newRoster;
+          document.getElementById('input-nickname').value = currentUser.nickname;
+        } else {
+          // 若在 LINE 瀏覽器內則自動導向登入
+          if (liff.isInClient()) {
+            liff.login();
+            return;
+          }
         }
-
-        updateUI();
-        setSyncStatus("success", "已成功連線 Google 試算表");
       } catch (err) {
-        console.warn("GViz fetch failed, fallback to local cache", err);
-        updateUI();
-        setSyncStatus("offline", "目前使用本機快取名單");
-      }
-    }
-
-    function setSyncStatus(type, text) {
-      const dot = document.getElementById("syncDot");
-      dot.className = "sync-dot " + type;
-      document.getElementById("syncText").innerText = text;
-    }
-
-    function updateUI() {
-      document.getElementById("eventTitle").innerText = eventConfig.title;
-      document.getElementById("eventDateDisplay").innerText = eventConfig.date;
-      document.getElementById("eventTimeDisplay").innerText = eventConfig.time;
-      document.getElementById("maxCapacity").innerText = eventConfig.capacity;
-      document.getElementById("eventMotto").innerText = `✨ ${eventConfig.motto}`;
-      document.getElementById("eventStatusBadge").innerText = eventConfig.status;
-
-      if (eventConfig.status.includes("截止") || eventConfig.status.includes("結束")) {
-        document.getElementById("eventStatusBadge").style.color = "#ef4444";
-        document.getElementById("regClosedNotice").style.display = "block";
-        document.getElementById("submitBtn").disabled = true;
-        document.getElementById("submitBtn").innerText = "⛔ 本場次報名已截止";
-      } else {
-        document.getElementById("eventStatusBadge").style.color = "var(--primary-dark)";
-        document.getElementById("regClosedNotice").style.display = "none";
-        document.getElementById("submitBtn").disabled = false;
-        document.getElementById("submitBtn").innerText = `🚀 送出接龍報名（自動回填 Google 試算表）`;
+        console.warn("LIFF 未啟用或處於外部瀏覽器環境:", err);
+        // Fallback: 產生臨時匿名代號供測試
+        currentUser.lineUserId = "GUEST_" + Math.random().toString(36).substring(2, 9);
       }
 
-      document.getElementById("infoDate").innerText = eventConfig.date;
-      document.getElementById("infoTime").innerText = eventConfig.time;
-      document.getElementById("infoLocation").innerText = eventConfig.location;
-      document.getElementById("infoCap").innerText = `${eventConfig.capacity} 人（額滿自動轉為候補）`;
-      document.getElementById("infoMotto").innerText = eventConfig.motto;
-      document.getElementById("infoNotice").innerText = eventConfig.notice;
-
-      renderRoster();
+      // 載入即時名冊
+      await fetchRoster();
     }
 
-    function renderRoster(filterText = "") {
-      const tbody = document.getElementById("rosterBody");
-      tbody.innerHTML = "";
+    // 2. 取得名冊
+    async function fetchRoster() {
+      const connPill = document.getElementById('conn-pill');
+      const connText = document.getElementById('conn-text');
+      const tbody = document.getElementById('roster-tbody');
 
-      const filtered = rosterList.filter(r => 
-        r.name.toLowerCase().includes(filterText.toLowerCase()) || 
-        (r.remarks && r.remarks.toLowerCase().includes(filterText.toLowerCase())) ||
-        (r.pace && r.pace.toLowerCase().includes(filterText.toLowerCase()))
-      );
+      connText.innerText = "讀取名單中...";
 
-      if (filtered.length === 0) {
-        tbody.innerHTML = `
-          <tr>
-            <td colspan="5">
-              <div class="empty-state">
-                <div class="empty-state-icon">👟</div>
-                <div style="font-weight: 600; font-size: 15px; margin-bottom: 4px;">目前名冊為空白</div>
-                <div>歡迎前往「✍️ 線上報名接龍」登記成為第 1 位跑友！</div>
-              </div>
-            </td>
-          </tr>
-        `;
-      } else {
-        filtered.forEach((r, idx) => {
-          const tr = document.createElement("tr");
-          const isWaiting = r.status.includes("候補");
-          const badgeClass = isWaiting ? "status-badge-waiting" : "status-badge-primary";
-          const badgeText = isWaiting ? "⏳ 候補" : "✅ 正取";
-
-          tr.innerHTML = `
-            <td><strong>#${r.id}</strong></td>
-            <td><strong>${escapeHtml(r.name)}</strong></td>
-            <td>${escapeHtml(r.pace)}</td>
-            <td>${escapeHtml(r.remarks)}</td>
-            <td><span class="${badgeClass}">${badgeText}</span></td>
-          `;
-          tbody.appendChild(tr);
-        });
-      }
-
-      const total = rosterList.length;
-      document.getElementById("totalCount").innerText = total;
-    }
-
-    async function handleRegister(e) {
-      e.preventDefault();
-      const name = document.getElementById("runnerName").value.trim();
-      const phone = document.getElementById("runnerPhone").value.trim();
-      const pace = document.getElementById("pacePlan").value;
-      const remarks = document.getElementById("remarks").value.trim();
-
-      if (!name) return;
-
-      const nextId = rosterList.length + 1;
-      const status = nextId <= eventConfig.capacity ? "正取" : "候補";
-
-      showToast("⏳ 正在將報名傳送至 Google 試算表...");
-
-      // 1. Dual submission Method A: Hidden Iframe Form POST (100% immune to CORS)
       try {
-        const hiddenForm = document.getElementById("gasHiddenForm");
-        hiddenForm.action = GAS_URL;
-        document.getElementById("h_name").value = name;
-        document.getElementById("h_phone").value = phone;
-        document.getElementById("h_pace").value = pace;
-        document.getElementById("h_remarks").value = remarks;
-        hiddenForm.submit();
-      } catch (e1) {
-        console.warn("Iframe submit error", e1);
-      }
+        const res = await fetch(`${GAS_API_URL}?activity_id=${ACTIVITY_ID}&t=${Date.now()}`);
+        const data = await res.json();
 
-      // 2. Dual submission Method B: Fetch POST with text/plain
-      try {
-        fetch(GAS_URL, {
-          method: "POST",
-          mode: "no-cors",
-          headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ name, phone, pace, remarks })
-        });
-      } catch (e2) {
-        console.warn("Fetch submit error", e2);
-      }
+        if (data.status === "success") {
+          connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
+          connText.innerText = "已連線雲端";
 
-      showToast(`🎉 報名已送出！正在更新試算表...`);
+          document.getElementById('stat-count').innerText = data.participants.length;
 
-      // Add to local UI temporarily
-      rosterList.push({
-        id: nextId,
-        name: name,
-        pace: pace,
-        remarks: remarks || "-",
-        status: status
-      });
+          if (data.participants.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">目前尚無人報名，搶當第 1 位！</td></tr>`;
+            return;
+          }
 
-      document.getElementById("regForm").reset();
-      updateUI();
+          let html = "";
+          data.participants.forEach((p, idx) => {
+            const isWaitlist = p.status === "候補";
+            const badgeClass = isWaitlist 
+              ? "bg-amber-50 text-amber-700 border-amber-200" 
+              : "bg-emerald-50 text-emerald-700 border-emerald-200";
 
-      // Refresh live from Google Sheet after 2.5 seconds
-      setTimeout(() => { loadDataFromGoogleSheet(); }, 2500);
-
-      switchTab('rosterTab');
-    }
-
-    function filterRoster() {
-      const q = document.getElementById("searchInput").value;
-      renderRoster(q);
-    }
-
-    function refreshFromSheet() {
-      loadDataFromGoogleSheet();
-      showToast("🔄 正在向 Google 試算表抓取最新名單...");
-    }
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-
-      document.getElementById(tabId).classList.add('active');
-
-      const mapping = { rosterTab: 0, registerTab: 1, infoTab: 2, backendTab: 3 };
-      document.querySelectorAll('.tab-btn')[mapping[tabId]].classList.add('active');
-    }
-
-    function exportToCSV() {
-      if (rosterList.length === 0) {
-        showToast("⚠️ 目前名單為空白，尚無資料可匯出！");
-        return;
-      }
-      let csv = "﻿序號,姓名,預計跑量與配速,備註,狀態\n";
-      rosterList.forEach(r => {
-        csv += `${r.id},"${r.name}","${r.pace}","${r.remarks}","${r.status}"\n`;
-      });
-
-      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement("a");
-      a.href = url;
-      a.download = `${eventConfig.title}_接龍名冊.csv`;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      showToast("📥 已成功下載 Excel / CSV 名冊！");
-    }
-
-    function copyLineChainText() {
-      let text = `${eventConfig.title}\n⏰${eventConfig.date} 集合起跑：${eventConfig.time}\n📍地點：${eventConfig.location}\n✨${eventConfig.motto}\n\n請接龍：\n`;
-      if (rosterList.length === 0) {
-        text += "1. (歡迎接龍報名)\n";
-      } else {
-        rosterList.forEach(r => {
-          text += `${r.id}. ${r.name} (${r.status})\n`;
-        });
-      }
-
-      navigator.clipboard.writeText(text).then(() => {
-        showToast("📋 已複製最新 LINE 接龍文案到剪貼簿！");
-      });
-    }
-
-    function showToast(msg) {
-      const toast = document.getElementById("toast");
-      toast.innerText = msg;
-      toast.style.display = "block";
-      setTimeout(() => { toast.style.display = "none"; }, 3000);
-    }
-
-    function escapeHtml(str) {
-      if (!str) return '';
-      return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
-    }
-
-    // Init
-    loadDataFromGoogleSheet();
-  </script>
-</body>
-</html>
+            html += `
+              <tr class="hover:bg-slate-50 transition">
+                <td class="py-2 px-1 font-mono text-slate-400">${idx + 1}</td>
+                <td class="py-2 px-2 font-medium text-slate-800">${escapeHtml(p.nickname || "")}</td>
+                <td class="py-2 px-2">${escapeHtml(p.running_plan || "")}</td>
+                <td class="py-2 px-2 text-slate-400">${escapeHtml(p.note || "-")}</td>
+                <td class="py-2 px-1 text-right">
+                  <span class="inline-block px-1.5 py-0.5 rounded text-[10px] border ${badgeClass}">
+                    ${p.status || "成功"}
+                  </span>
+                </td>
+              </tr>
+            `;
+          });
+          tbody.innerHTML = html;
+        }
+      } catch (err) {
+        connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-
