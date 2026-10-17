@@ -114,10 +114,18 @@
           <input type="text" id="input-plan" required maxlength="50"
             class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
             placeholder="例：10K / 6分速">
+          
+          <!-- 快捷標籤按鈕（修正具體事件綁定） -->
           <div class="flex gap-1.5 mt-2">
-            <button type="button" onclick="setPresetPlan('5K / 歡樂跑')" class="text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-slate-600 transition">5K 歡樂跑</button>
-            <button type="button" onclick="setPresetPlan('10K / 6分速')" class="text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-slate-600 transition">10K 6分速</button>
-            <button type="button" onclick="setPresetPlan('12K / 5分半')" class="text-xs bg-slate-100 hover:bg-slate-200 px-2.5 py-1 rounded-lg text-slate-600 transition">12K 5分半</button>
+            <button type="button" class="pace-btn text-xs bg-slate-100 hover:bg-slate-200 active:bg-slate-300 px-2.5 py-1.5 rounded-lg text-slate-700 font-medium transition cursor-pointer select-none" data-plan="5K / 歡樂跑">
+              5K 歡樂跑
+            </button>
+            <button type="button" class="pace-btn text-xs bg-slate-100 hover:bg-slate-200 active:bg-slate-300 px-2.5 py-1.5 rounded-lg text-slate-700 font-medium transition cursor-pointer select-none" data-plan="10K / 6分速">
+              10K 6分速
+            </button>
+            <button type="button" class="pace-btn text-xs bg-slate-100 hover:bg-slate-200 active:bg-slate-300 px-2.5 py-1.5 rounded-lg text-slate-700 font-medium transition cursor-pointer select-none" data-plan="12K / 5分半">
+              12K 5分半
+            </button>
           </div>
         </div>
 
@@ -134,7 +142,7 @@
         <div id="form-msg" class="hidden p-3 rounded-xl text-xs font-medium"></div>
 
         <button type="submit" id="btn-submit"
-          class="w-full line-green text-white font-medium py-3 rounded-xl shadow transition duration-150 flex items-center justify-center gap-1.5">
+          class="w-full line-green text-white font-medium py-3 rounded-xl shadow transition duration-150 flex items-center justify-center gap-1.5 cursor-pointer">
           <span id="btn-text">確認送出報名</span>
         </button>
       </form>
@@ -147,7 +155,7 @@
           <h2 class="text-sm font-bold text-slate-800">📊 即時團練名冊</h2>
           <p class="text-[11px] text-slate-400">雙向同步自 Google 試算表</p>
         </div>
-        <button onclick="fetchRoster()" class="text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1 rounded-lg hover:bg-emerald-50 transition">
+        <button id="btn-refresh" type="button" class="text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1 rounded-lg hover:bg-emerald-50 transition cursor-pointer">
           🔄 重新整理
         </button>
       </div>
@@ -195,61 +203,95 @@
       avatarUrl: ""
     };
 
-    function setPresetPlan(plan) {
-      document.getElementById('input-plan').value = plan;
+    // 快捷按鈕事件綁定（獨立掛載，保證可直接點選輸入）
+    function bindPaceButtons() {
+      const paceBtns = document.querySelectorAll('.pace-btn');
+      const planInput = document.getElementById('input-plan');
+      
+      paceBtns.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.preventDefault();
+          const plan = this.getAttribute('data-plan');
+          if (planInput && plan) {
+            planInput.value = plan;
+            planInput.focus();
+            planInput.classList.add('ring-2', 'ring-emerald-400');
+            setTimeout(() => {
+              planInput.classList.remove('ring-2', 'ring-emerald-400');
+            }, 300);
+          }
+        });
+      });
+
+      const refreshBtn = document.getElementById('btn-refresh');
+      if (refreshBtn) {
+        refreshBtn.addEventListener('click', function(e) {
+          e.preventDefault();
+          fetchRoster();
+        });
+      }
     }
 
-    // 1. 初始化 LIFF
+    // 初始化應用程式
     async function initApp() {
-      try {
-        await liff.init({ liffId: LIFF_ID });
-        if (liff.isLoggedIn()) {
-          const profile = await liff.getProfile();
-          currentUser.lineUserId = profile.userId;
-          currentUser.nickname = profile.displayName;
-          currentUser.avatarUrl = profile.pictureUrl || "";
+      bindPaceButtons();
 
-          // 顯示使用者卡片
-          document.getElementById('liff-profile-card').classList.remove('hidden');
-          document.getElementById('user-name').innerText = currentUser.nickname;
-          if (currentUser.avatarUrl) {
-            document.getElementById('user-avatar').src = currentUser.avatarUrl;
-          }
-          document.getElementById('input-nickname').value = currentUser.nickname;
-        } else {
-          // 若在 LINE 瀏覽器內則自動導向登入
-          if (liff.isInClient()) {
+      try {
+        if (window.liff) {
+          await liff.init({ liffId: LIFF_ID });
+          if (liff.isLoggedIn()) {
+            const profile = await liff.getProfile();
+            currentUser.lineUserId = profile.userId;
+            currentUser.nickname = profile.displayName;
+            currentUser.avatarUrl = profile.pictureUrl || "";
+
+            const profileCard = document.getElementById('liff-profile-card');
+            if (profileCard) profileCard.classList.remove('hidden');
+            
+            const userNameEl = document.getElementById('user-name');
+            if (userNameEl) userNameEl.innerText = currentUser.nickname;
+            
+            const userAvatarEl = document.getElementById('user-avatar');
+            if (userAvatarEl && currentUser.avatarUrl) {
+              userAvatarEl.src = currentUser.avatarUrl;
+            }
+            
+            const nickInput = document.getElementById('input-nickname');
+            if (nickInput) nickInput.value = currentUser.nickname;
+          } else if (liff.isInClient()) {
             liff.login();
             return;
           }
         }
       } catch (err) {
-        console.warn("LIFF 未啟用或處於外部瀏覽器環境:", err);
-        // Fallback: 產生臨時匿名代號供測試
+        console.warn("LIFF 載入略過或離線環境:", err);
+      }
+
+      if (!currentUser.lineUserId) {
         currentUser.lineUserId = "GUEST_" + Math.random().toString(36).substring(2, 9);
       }
 
-      // 載入即時名冊
       await fetchRoster();
     }
 
-    // 2. 取得名冊
+    // 取得即時名冊
     async function fetchRoster() {
       const connPill = document.getElementById('conn-pill');
       const connText = document.getElementById('conn-text');
       const tbody = document.getElementById('roster-tbody');
 
-      connText.innerText = "讀取名單中...";
+      if (connText) connText.innerText = "讀取名單中...";
 
       try {
         const res = await fetch(`${GAS_API_URL}?activity_id=${ACTIVITY_ID}&t=${Date.now()}`);
         const data = await res.json();
 
         if (data.status === "success") {
-          connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
-          connText.innerText = "已連線雲端";
+          if (connPill) connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
+          if (connText) connText.innerText = "已連線雲端";
 
-          document.getElementById('stat-count').innerText = data.participants.length;
+          const statCount = document.getElementById('stat-count');
+          if (statCount) statCount.innerText = data.participants.length;
 
           if (data.participants.length === 0) {
             tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">目前尚無人報名，搶當第 1 位！</td></tr>`;
@@ -280,4 +322,73 @@
           tbody.innerHTML = html;
         }
       } catch (err) {
-        connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-
+        if (connPill) connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200";
+        if (connText) connText.innerText = "連線異常";
+        if (tbody) tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-red-500">無法讀取名冊，請稍候再試。</td></tr>`;
+      }
+    }
+
+    // 處理表單提交
+    document.getElementById('reg-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById('btn-submit');
+      const btnText = document.getElementById('btn-text');
+      const msg = document.getElementById('form-msg');
+
+      btn.disabled = true;
+      btnText.innerText = "處理中...";
+      msg.className = "hidden";
+
+      const payload = {
+        action: "register",
+        activity_id: ACTIVITY_ID,
+        line_user_id: currentUser.lineUserId || ("WEB_" + Date.now()),
+        nickname: document.getElementById('input-nickname').value.trim(),
+        running_plan: document.getElementById('input-plan').value.trim(),
+        note: document.getElementById('input-note').value.trim()
+      };
+
+      try {
+        const response = await fetch(GAS_API_URL, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.status === "success") {
+          msg.className = "p-3 rounded-xl text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 block";
+          msg.innerHTML = `<strong>${result.message}</strong><br>報名跑友：${result.data.nickname}（${result.data.runningPlan}）`;
+          btnText.innerText = "已送出（可再次修改）";
+
+          await fetchRoster();
+
+          if (window.liff && liff.isInClient()) {
+            setTimeout(() => { liff.closeWindow(); }, 2500);
+          }
+        } else {
+          msg.className = "p-3 rounded-xl text-xs bg-red-50 text-red-800 border border-red-200 block";
+          msg.innerText = "送出失敗：" + result.message;
+          btnText.innerText = "重新送出";
+        }
+      } catch (err) {
+        msg.className = "p-3 rounded-xl text-xs bg-red-50 text-red-800 border border-red-200 block";
+        msg.innerText = "網路連線異常，請檢查網路後再試。";
+        btnText.innerText = "確認送出報名";
+      } finally {
+        btn.disabled = false;
+      }
+    });
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function(m) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
+      });
+    }
+
+    document.addEventListener("DOMContentLoaded", initApp);
+  </script>
+</body>
+</html>
