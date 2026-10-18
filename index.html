@@ -358,38 +358,4 @@
         const result = await response.json();
 
         if (result.status === "success") {
-          msg.className = "p-3 rounded-xl text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 block";
-          msg.innerHTML = `<strong>${result.message}</strong><br>報名跑友：${result.data.nickname}（${result.data.runningPlan}）`;
-          btnText.innerText = "已送出（可再次修改）";
-
-          // 重新載入最新名冊
-          fetchRosterJSONP();
-
-          if (window.liff && liff.isInClient()) {
-            setTimeout(() => { liff.closeWindow(); }, 2500);
-          }
-        } else {
-          msg.className = "p-3 rounded-xl text-xs bg-red-50 text-red-800 border border-red-200 block";
-          msg.innerText = "送出失敗：" + result.message;
-          btnText.innerText = "重新送出";
-        }
-      } catch (err) {
-        console.error("submit error:", err);
-        msg.className = "p-3 rounded-xl text-xs bg-red-50 text-red-800 border border-red-200 block";
-        msg.innerText = "網路連線異常，請檢查網路後再試。";
-        btnText.innerText = "確認送出報名";
-      } finally {
-        btn.disabled = false;
-      }
-    });
-
-    function escapeHtml(str) {
-      return String(str).replace(/[&<>"']/g, function(m) {
-        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m];
-      });
-    }
-
-    document.addEventListener("DOMContentLoaded", initApp);
-  </script>
-</body>
-</html>
+          msg.className = "p-3 rounded-xl text-xs bg-emerald-50 text-emerald-80
