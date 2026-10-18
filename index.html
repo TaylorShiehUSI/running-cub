@@ -153,7 +153,7 @@
           <h2 class="text-sm font-bold text-slate-800">📊 即時團練名冊</h2>
           <p class="text-[11px] text-slate-400">雙向同步自 Google 試算表</p>
         </div>
-        <button type="button" onclick="fetchRoster()" class="text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1 rounded-lg hover:bg-emerald-50 transition cursor-pointer">
+        <button type="button" onclick="fetchRosterJSONP()" class="text-xs text-emerald-600 hover:text-emerald-700 px-2 py-1 rounded-lg hover:bg-emerald-50 transition cursor-pointer">
           🔄 重新整理
         </button>
       </div>
@@ -190,7 +190,6 @@
   </main>
 
   <script>
-    // ⚙️ 系統常數配置
     const LIFF_ID = "2012065855-mDY8iWmz";
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbylG68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec";
     const ACTIVITY_ID = "running-cub-run26";
@@ -201,7 +200,6 @@
       avatarUrl: ""
     };
 
-    // 綁定跑速快捷按鈕
     function bindPaceButtons() {
       const paceBtns = document.querySelectorAll('.pace-btn');
       const planInput = document.getElementById('input-plan');
@@ -219,7 +217,6 @@
       });
     }
 
-    // 1. 初始化 LIFF 與使用者
     async function initApp() {
       bindPaceButtons();
 
@@ -251,67 +248,83 @@
         currentUser.lineUserId = "GUEST_" + Math.random().toString(36).substring(2, 9);
       }
 
-      // 載入即時名冊
-      await fetchRoster();
+      // 載入即時名冊（使用 JSONP 模式，跨域不被擋）
+      fetchRosterJSONP();
     }
 
-    // 2. 取得名冊（防 CORS 與 302 重導向）
-    async function fetchRoster() {
+    // 核心解決方案：使用 JSONP 跨網域載入名冊
+    function fetchRosterJSONP() {
       const connPill = document.getElementById('conn-pill');
       const connText = document.getElementById('conn-text');
-      const tbody = document.getElementById('roster-tbody');
-
       if (connText) connText.innerText = "讀取名單中...";
 
-      try {
-        const res = await fetch(`${GAS_API_URL}?activity_id=${ACTIVITY_ID}&t=${Date.now()}`, {
-          method: "GET",
-          redirect: "follow"
-        });
-        const data = await res.json();
+      const scriptId = "jsonp-roster-script";
+      const oldScript = document.getElementById(scriptId);
+      if (oldScript) oldScript.remove();
 
+      // 定義全域回呼函式
+      window.handleRosterResponse = function(data) {
         if (data && data.status === "success") {
           connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
           connText.innerText = "已連線雲端";
-          document.getElementById('stat-count').innerText = data.participants ? data.participants.length : 0;
-
-          if (!data.participants || data.participants.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">目前尚無人報名，搶當第 1 位！</td></tr>`;
-            return;
-          }
-
-          let html = "";
-          data.participants.forEach((p, idx) => {
-            const isWaitlist = p.status === "候補";
-            const badgeClass = isWaitlist 
-              ? "bg-amber-50 text-amber-700 border-amber-200" 
-              : "bg-emerald-50 text-emerald-700 border-emerald-200";
-
-            html += `
-              <tr class="hover:bg-slate-50 transition">
-                <td class="py-2 px-1 font-mono text-slate-400">${idx + 1}</td>
-                <td class="py-2 px-2 font-medium text-slate-800">${escapeHtml(p.nickname || "")}</td>
-                <td class="py-2 px-2">${escapeHtml(p.running_plan || "")}</td>
-                <td class="py-2 px-2 text-slate-400">${escapeHtml(p.note || "-")}</td>
-                <td class="py-2 px-1 text-right">
-                  <span class="inline-block px-1.5 py-0.5 rounded text-[10px] border ${badgeClass}">
-                    ${p.status || "成功"}
-                  </span>
-                </td>
-              </tr>
-            `;
-          });
-          tbody.innerHTML = html;
+          renderRoster(data.participants || []);
+        } else {
+          showConnError();
         }
-      } catch (err) {
-        console.error("fetchRoster error:", err);
-        if (connPill) connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200";
-        if (connText) connText.innerText = "連線異常";
-        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-red-500">無法讀取名冊，請稍候再試。</td></tr>`;
-      }
+      };
+
+      const script = document.createElement("script");
+      script.id = scriptId;
+      script.src = `${GAS_API_URL}?activity_id=${ACTIVITY_ID}&callback=handleRosterResponse&t=${Date.now()}`;
+      script.onerror = function() {
+        showConnError();
+      };
+      document.body.appendChild(script);
     }
 
-    // 3. 處理表單提交（避開 Preflight，使用 text/plain 送出 JSON）
+    function showConnError() {
+      const connPill = document.getElementById('conn-pill');
+      const connText = document.getElementById('conn-text');
+      const tbody = document.getElementById('roster-tbody');
+      if (connPill) connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200";
+      if (connText) connText.innerText = "連線異常";
+      if (tbody) tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-red-500">無法讀取名冊，請稍候再試。</td></tr>`;
+    }
+
+    function renderRoster(participants) {
+      const tbody = document.getElementById('roster-tbody');
+      document.getElementById('stat-count').innerText = participants.length;
+
+      if (participants.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-slate-400">目前尚無人報名，搶當第 1 位！</td></tr>`;
+        return;
+      }
+
+      let html = "";
+      participants.forEach((p, idx) => {
+        const isWaitlist = p.status === "候補";
+        const badgeClass = isWaitlist 
+          ? "bg-amber-50 text-amber-700 border-amber-200" 
+          : "bg-emerald-50 text-emerald-700 border-emerald-200";
+
+        html += `
+          <tr class="hover:bg-slate-50 transition">
+            <td class="py-2 px-1 font-mono text-slate-400">${idx + 1}</td>
+            <td class="py-2 px-2 font-medium text-slate-800">${escapeHtml(p.nickname || "")}</td>
+            <td class="py-2 px-2">${escapeHtml(p.running_plan || "")}</td>
+            <td class="py-2 px-2 text-slate-400">${escapeHtml(p.note || "-")}</td>
+            <td class="py-2 px-1 text-right">
+              <span class="inline-block px-1.5 py-0.5 rounded text-[10px] border ${badgeClass}">
+                ${p.status || "成功"}
+              </span>
+            </td>
+          </tr>
+        `;
+      });
+      tbody.innerHTML = html;
+    }
+
+    // 處理表單提交
     document.getElementById('reg-form').addEventListener('submit', async function(e) {
       e.preventDefault();
 
@@ -333,9 +346,9 @@
       };
 
       try {
+        // 使用 text/plain 送出 JSON，避開 OPTIONS 預檢
         const response = await fetch(GAS_API_URL, {
           method: "POST",
-          redirect: "follow",
           headers: {
             "Content-Type": "text/plain;charset=utf-8"
           },
@@ -349,7 +362,8 @@
           msg.innerHTML = `<strong>${result.message}</strong><br>報名跑友：${result.data.nickname}（${result.data.runningPlan}）`;
           btnText.innerText = "已送出（可再次修改）";
 
-          await fetchRoster();
+          // 重新載入最新名冊
+          fetchRosterJSONP();
 
           if (window.liff && liff.isInClient()) {
             setTimeout(() => { liff.closeWindow(); }, 2500);
