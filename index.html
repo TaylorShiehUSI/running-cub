@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>🏃 馬兒一年千里目標啟動 第26次團練 - 線上報名</title>
+  <title>團練活動報名系統 - LINE 報名小幫手</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
   <style>
@@ -11,12 +11,8 @@
       background-color: #F8FAFC;
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     }
-    .line-green {
-      background-color: #06C755;
-    }
-    .line-green:hover {
-      background-color: #05b34c;
-    }
+    .line-green { background-color: #06C755; }
+    .line-green:hover { background-color: #05b34c; }
   </style>
 </head>
 <body class="min-h-screen text-slate-800 pb-12">
@@ -27,8 +23,8 @@
       <div class="flex items-center gap-2">
         <span class="text-xl">🏃</span>
         <div>
-          <div class="text-xs font-semibold text-emerald-600">第 26 次例行團練</div>
-          <div class="text-sm font-bold text-slate-800">馬兒一年千里目標啟動</div>
+          <div id="nav-session" class="text-xs font-semibold text-emerald-600">例行團練讀取中...</div>
+          <div id="nav-title" class="text-sm font-bold text-slate-800">馬兒一年千里目標啟動</div>
         </div>
       </div>
       <div id="conn-pill" class="flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-amber-50 text-amber-700 border border-amber-200">
@@ -40,16 +36,18 @@
 
   <main class="max-w-xl mx-auto px-4 mt-4 space-y-4">
 
-    <!-- 活動視覺卡片 -->
+    <!-- 活動視覺卡片（內容由試算表動態驅動） -->
     <section class="bg-gradient-to-br from-emerald-600 to-teal-700 text-white rounded-2xl p-5 shadow-sm">
       <div class="flex items-center justify-between mb-2">
-        <span class="px-2.5 py-0.5 rounded-full text-xs bg-white/20 font-medium tracking-wide">都會公園歡樂跑</span>
-        <span class="text-xs text-emerald-100 font-mono">10/14 (三) 06:00 起跑</span>
+        <span id="badge-location" class="px-2.5 py-0.5 rounded-full text-xs bg-white/20 font-medium tracking-wide">
+          都會公園
+        </span>
+        <span id="badge-datetime" class="text-xs text-emerald-100 font-mono">載入中...</span>
       </div>
-      <h1 class="text-xl font-bold mb-1">🏃 馬兒一年千里目標啟動 第26次團練</h1>
+      <h1 id="hero-title" class="text-xl font-bold mb-1">🏃 團練載入中...</h1>
       <p class="text-xs text-emerald-100 mb-3">來都會歡樂跑步，請踴躍報名！大家一起累積里程！</p>
       <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-xl bg-black/15 text-xs text-amber-300 font-medium">
-        <span>✨</span> 只有累積，沒有奇蹟！
+        <span>✨</span> <span id="hero-slogan">只有累積，沒有奇蹟！</span>
       </div>
 
       <!-- 統計數字 -->
@@ -59,15 +57,15 @@
           <div class="text-[10px] text-emerald-100">目前報名</div>
         </div>
         <div class="bg-white/10 rounded-xl p-2 backdrop-blur-sm">
-          <div class="text-lg font-bold">30</div>
+          <div id="stat-max" class="text-lg font-bold">30</div>
           <div class="text-[10px] text-emerald-100">名額上限</div>
         </div>
         <div class="bg-white/10 rounded-xl p-2 backdrop-blur-sm">
-          <div class="text-lg font-bold">10/14</div>
+          <div id="stat-date" class="text-lg font-bold">--/--</div>
           <div class="text-[10px] text-emerald-100">團練日期</div>
         </div>
         <div class="bg-white/10 rounded-xl p-2 backdrop-blur-sm">
-          <div class="text-lg font-bold">06:00</div>
+          <div id="stat-time" class="text-lg font-bold">--:--</div>
           <div class="text-[10px] text-emerald-100">集合時間</div>
         </div>
       </div>
@@ -89,18 +87,28 @@
 
     <!-- 報名表單 -->
     <section class="bg-white border border-slate-200 rounded-2xl p-5 shadow-sm">
-      <h2 class="text-sm font-bold text-slate-800 mb-3 flex items-center gap-1.5">
-        <span>✍️</span> 線上接龍報名表單
-      </h2>
+      <div class="flex items-center justify-between mb-3">
+        <h2 class="text-sm font-bold text-slate-800 flex items-center gap-1.5">
+          <span>✍️</span> 線上接龍報名表單
+        </h2>
+        <span id="act-status-badge" class="text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium">
+          檢查中
+        </span>
+      </div>
 
-      <!-- 隱藏 iframe 接收回應，徹底避開 CORS -->
+      <!-- 活動截止提示橫幅（依 status 動態顯示） -->
+      <div id="closed-banner" class="hidden mb-3 p-3 rounded-xl text-xs bg-amber-50 text-amber-800 border border-amber-200">
+        ⚠️ 本場次團練已截止報名，暫停受理新增與修改。
+      </div>
+
+      <!-- 隱藏 iframe -->
       <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){onFormSubmitSuccess();}"></iframe>
 
       <form id="reg-form" target="hidden_iframe" method="POST"
         action="https://script.google.com/macros/s/AKfycbyzKdwldP0dW6FK6sMwz4LVF89njztvzLiODozGtNf_kdKZfHHM1u84yX43cq5eOs7skg/exec" class="space-y-3.5">
         
         <input type="hidden" name="action" value="register">
-        <input type="hidden" name="activity_id" value="running-cub-run26">
+        <input type="hidden" name="activity_id" id="hidden-act-id" value="">
         <input type="hidden" name="line_user_id" id="hidden-line-id" value="">
 
         <div>
@@ -108,7 +116,7 @@
             跑友姓名 / 暱稱 <span class="text-red-500">*</span>
           </label>
           <input type="text" name="nickname" id="input-nickname" required maxlength="20"
-            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-slate-100 disabled:text-slate-400"
             placeholder="請輸入稱呼">
         </div>
 
@@ -117,7 +125,7 @@
             預計跑量 / 配速 <span class="text-red-500">*</span>
           </label>
           <input type="text" name="running_plan" id="input-plan" required maxlength="50"
-            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-slate-100 disabled:text-slate-400"
             placeholder="例：10K / 6分速">
           <div class="flex gap-1.5 mt-2">
             <button type="button" class="pace-btn text-xs bg-slate-100 hover:bg-slate-200 active:bg-slate-300 px-2.5 py-1.5 rounded-lg text-slate-700 font-medium transition cursor-pointer select-none" data-plan="5K / 歡樂跑">5K 歡樂跑</button>
@@ -129,14 +137,14 @@
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">備註（選填）</label>
           <input type="text" name="note" id="input-note" maxlength="100"
-            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500"
+            class="w-full text-sm px-3.5 py-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-emerald-500 disabled:bg-slate-100 disabled:text-slate-400"
             placeholder="如攜伴、特殊提醒">
         </div>
 
         <div id="form-msg" class="hidden p-3 rounded-xl text-xs font-medium"></div>
 
         <button type="submit" id="btn-submit"
-          class="w-full line-green text-white font-medium py-3 rounded-xl shadow transition duration-150 flex items-center justify-center gap-1.5 cursor-pointer">
+          class="w-full line-green text-white font-medium py-3 rounded-xl shadow transition duration-150 flex items-center justify-center gap-1.5 cursor-pointer disabled:bg-slate-300 disabled:cursor-not-allowed">
           <span id="btn-text">確認送出報名</span>
         </button>
       </form>
@@ -177,9 +185,7 @@
 
   <script>
     const LIFF_ID = "2012065855-mDY8iWmz";
-    // 全新有效的 GAS API 網址
     const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyzKdwldP0dW6FK6sMwz4LVF89njztvzLiODozGtNf_kdKZfHHM1u84yX43cq5eOs7skg/exec";
-    const ACTIVITY_ID = "running-cub-run26";
     let submitted = false;
 
     let currentUser = {
@@ -194,12 +200,9 @@
       paceBtns.forEach(btn => {
         btn.addEventListener('click', function(e) {
           e.preventDefault();
-          const plan = this.getAttribute('data-plan');
-          if (planInput && plan) {
-            planInput.value = plan;
+          if (planInput && !planInput.disabled) {
+            planInput.value = this.getAttribute('data-plan');
             planInput.focus();
-            planInput.classList.add('ring-2', 'ring-emerald-400');
-            setTimeout(() => planInput.classList.remove('ring-2', 'ring-emerald-400'), 250);
           }
         });
       });
@@ -237,11 +240,10 @@
       }
       document.getElementById('hidden-line-id').value = currentUser.lineUserId;
 
-      // 載入名冊
       loadRosterDirectly();
     }
 
-    // 透過 Google Apps Script JSONP 讀取名單
+    // 透過 JSONP 取得動態活動資訊與名單
     function loadRosterDirectly() {
       const connPill = document.getElementById('conn-pill');
       const connText = document.getElementById('conn-text');
@@ -255,18 +257,66 @@
         if (data && data.status === "success") {
           connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
           connText.innerText = "已連線雲端";
+
+          // 1. 動態更新活動資訊
+          if (data.activity) {
+            applyActivityInfo(data.activity);
+          }
+
+          // 2. 渲染名冊表格
           renderTable(data.participants || []);
         }
       };
 
       const script = document.createElement("script");
       script.id = scriptId;
-      script.src = `${GAS_API_URL}?activity_id=${ACTIVITY_ID}&callback=renderRosterCallback&_=${Date.now()}`;
+      script.src = `${GAS_API_URL}?callback=renderRosterCallback&_=${Date.now()}`;
       script.onerror = function() {
         if (connPill) connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-red-50 text-red-700 border border-red-200";
         if (connText) connText.innerText = "連線檢查中";
       };
       document.body.appendChild(script);
+    }
+
+    // 將後端回傳的活動資訊動態綁定到畫面上
+    function applyActivityInfo(act) {
+      document.getElementById('hidden-act-id').value = act.activity_id || "";
+      document.getElementById('nav-session').innerText = act.session_title || "例行團練";
+      document.getElementById('hero-title').innerText = act.name || "團練活動";
+      document.getElementById('badge-location').innerText = act.location || "集合點";
+      document.getElementById('badge-datetime').innerText = `${act.event_date || ""} ${act.meeting_time || ""}`;
+      document.getElementById('hero-slogan').innerText = act.slogan || "只有累積，沒有奇蹟！";
+      
+      document.getElementById('stat-max').innerText = act.max_people || 30;
+      document.getElementById('stat-date').innerText = act.event_date ? act.event_date.split(' ')[0] : "--/--";
+      document.getElementById('stat-time').innerText = act.meeting_time || "--:--";
+
+      // 狀態機 UI 控制 (PRD 第 4 節規範)
+      const badge = document.getElementById('act-status-badge');
+      const closedBanner = document.getElementById('closed-banner');
+      const btn = document.getElementById('btn-submit');
+      const btnText = document.getElementById('btn-text');
+      const inputs = [
+        document.getElementById('input-nickname'),
+        document.getElementById('input-plan'),
+        document.getElementById('input-note')
+      ];
+
+      if (act.status === "Open") {
+        badge.className = "text-xs px-2.5 py-0.5 rounded-full bg-emerald-50 text-emerald-700 font-medium";
+        badge.innerText = "開放報名中";
+        closedBanner.classList.add('hidden');
+        btn.disabled = false;
+        btnText.innerText = "確認送出報名";
+        inputs.forEach(el => el.disabled = false);
+      } else {
+        badge.className = "text-xs px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 font-medium";
+        badge.innerText = "報名已截止";
+        closedBanner.classList.remove('hidden');
+        btn.disabled = true;
+        btnText.innerText = "⚠️ 報名已截止";
+        inputs.forEach(el => el.disabled = true);
+      }
     }
 
     function renderTable(list) {
@@ -302,7 +352,6 @@
       tbody.innerHTML = html;
     }
 
-    // 表單送出
     document.getElementById('reg-form').addEventListener('submit', function() {
       submitted = true;
       const btn = document.getElementById('btn-submit');
@@ -311,7 +360,6 @@
       btnText.innerText = "資料寫入中...";
     });
 
-    // 接收完成通知
     function onFormSubmitSuccess() {
       const btn = document.getElementById('btn-submit');
       const btnText = document.getElementById('btn-text');
