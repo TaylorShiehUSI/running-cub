@@ -97,7 +97,7 @@
       <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){onFormSubmitSuccess();}"></iframe>
 
       <form id="reg-form" target="hidden_iframe" method="POST"
-        action="https://script.google.com/macros/s/AKfycby1G68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec" class="space-y-3.5">
+        action="https://script.google.com/macros/s/AKfycbyzKdwldP0dW6FK6sMwz4LVF89njztvzLiODozGtNf_kdKZfHHM1u84yX43cq5eOs7skg/exec" class="space-y-3.5">
         
         <input type="hidden" name="action" value="register">
         <input type="hidden" name="activity_id" value="running-cub-run26">
@@ -177,8 +177,8 @@
 
   <script>
     const LIFF_ID = "2012065855-mDY8iWmz";
-    // 修正：AKfycby1 (數字 1)
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycby1G68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec";
+    // 全新有效的 GAS API 網址
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbyzKdwldP0dW6FK6sMwz4LVF89njztvzLiODozGtNf_kdKZfHHM1u84yX43cq5eOs7skg/exec";
     const ACTIVITY_ID = "running-cub-run26";
     let submitted = false;
 
@@ -302,7 +302,7 @@
       tbody.innerHTML = html;
     }
 
-    // 送出表單
+    // 表單送出
     document.getElementById('reg-form').addEventListener('submit', function() {
       submitted = true;
       const btn = document.getElementById('btn-submit');
