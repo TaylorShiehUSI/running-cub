@@ -93,13 +93,12 @@
         <span>✍️</span> 線上接龍報名表單
       </h2>
 
-      <!-- 核心：以隱藏 iframe 接收回應，不觸發頁面跳轉且 100% 避開 CORS 阻擋 -->
+      <!-- 隱藏 iframe 接收回應，徹底避開 CORS -->
       <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="if(submitted){onFormSubmitSuccess();}"></iframe>
 
       <form id="reg-form" target="hidden_iframe" method="POST"
-        action="https://script.google.com/macros/s/AKfycbylG68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec" class="space-y-3.5">
+        action="https://script.google.com/macros/s/AKfycby1G68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec" class="space-y-3.5">
         
-        <!-- 隱藏控制欄位 -->
         <input type="hidden" name="action" value="register">
         <input type="hidden" name="activity_id" value="running-cub-run26">
         <input type="hidden" name="line_user_id" id="hidden-line-id" value="">
@@ -178,7 +177,8 @@
 
   <script>
     const LIFF_ID = "2012065855-mDY8iWmz";
-    const GAS_API_URL = "https://script.google.com/macros/s/AKfycbylG68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec";
+    // 修正：AKfycby1 (數字 1)
+    const GAS_API_URL = "https://script.google.com/macros/s/AKfycby1G68eSFdGN37YfIk7Zn17FxxDV1xJVfN0Bj16eQ8t5tN7fOB7on4rCVnglcfYo9QwbQ/exec";
     const ACTIVITY_ID = "running-cub-run26";
     let submitted = false;
 
@@ -302,7 +302,7 @@
       tbody.innerHTML = html;
     }
 
-    // 送出表單攔截
+    // 送出表單
     document.getElementById('reg-form').addEventListener('submit', function() {
       submitted = true;
       const btn = document.getElementById('btn-submit');
@@ -311,7 +311,7 @@
       btnText.innerText = "資料寫入中...";
     });
 
-    // 表單透過 iframe 送出完成的回呼
+    // 接收完成通知
     function onFormSubmitSuccess() {
       const btn = document.getElementById('btn-submit');
       const btnText = document.getElementById('btn-text');
@@ -322,10 +322,8 @@
       msg.className = "p-3 rounded-xl text-xs bg-emerald-50 text-emerald-800 border border-emerald-200 block";
       msg.innerHTML = `<strong>🎉 報名資料已成功送出！</strong><br>名冊已同步更新至 Google 試算表。`;
 
-      // 重新整理名單
       setTimeout(loadRosterDirectly, 1000);
 
-      // 若在 LINE 視窗內，3 秒後自動關閉
       if (window.liff && liff.isInClient()) {
         setTimeout(() => { liff.closeWindow(); }, 2500);
       }
