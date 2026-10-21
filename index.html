@@ -194,6 +194,28 @@
       avatarUrl: ""
     };
 
+    // 核心安全格式化：無論後端回傳字串或 1899 年戳記，強制精確擷取 HH:mm
+    function formatTimeClean(val) {
+      if (!val) return "--:--";
+      const s = String(val).trim();
+      const match = s.match(/(\d{1,2}:\d{2})(?::\d{2})?/);
+      if (match) {
+        return match[1];
+      }
+      return s;
+    }
+
+    // 核心安全格式化：若為日期戳記，僅擷取 MM/dd 或簡約字串
+    function formatDateClean(val) {
+      if (!val) return "--/--";
+      const s = String(val).trim();
+      const match = s.match(/(\d{1,2}\/\d{1,2})/);
+      if (match) {
+        return match[1];
+      }
+      return s.split(' ')[0] || "--/--";
+    }
+
     function bindPaceButtons() {
       const paceBtns = document.querySelectorAll('.pace-btn');
       const planInput = document.getElementById('input-plan');
@@ -258,12 +280,10 @@
           connPill.className = "flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-medium bg-emerald-50 text-emerald-700 border border-emerald-200";
           connText.innerText = "已連線雲端";
 
-          // 1. 動態更新活動資訊
           if (data.activity) {
             applyActivityInfo(data.activity);
           }
 
-          // 2. 渲染名冊表格
           renderTable(data.participants || []);
         }
       };
@@ -278,18 +298,23 @@
       document.body.appendChild(script);
     }
 
-    // 將後端回傳的活動資訊動態綁定到畫面上
+    // 將後端回傳的活動資訊動態綁定到畫面上（含格式清洗防護）
     function applyActivityInfo(act) {
       document.getElementById('hidden-act-id').value = act.activity_id || "";
       document.getElementById('nav-session').innerText = act.session_title || "例行團練";
       document.getElementById('hero-title').innerText = act.name || "團練活動";
       document.getElementById('badge-location').innerText = act.location || "集合點";
-      document.getElementById('badge-datetime').innerText = `${act.event_date || ""} ${act.meeting_time || ""}`;
+      
+      const cleanTime = formatTimeClean(act.meeting_time);
+      const cleanDate = formatDateClean(act.event_date);
+
+      // 上方標籤顯示「活動日期 時間」
+      document.getElementById('badge-datetime').innerText = `${act.event_date || ""} ${cleanTime}`;
       document.getElementById('hero-slogan').innerText = act.slogan || "只有累積，沒有奇蹟！";
       
       document.getElementById('stat-max').innerText = act.max_people || 30;
-      document.getElementById('stat-date').innerText = act.event_date ? act.event_date.split(' ')[0] : "--/--";
-      document.getElementById('stat-time').innerText = act.meeting_time || "--:--";
+      document.getElementById('stat-date').innerText = cleanDate;
+      document.getElementById('stat-time').innerText = cleanTime;
 
       // 狀態機 UI 控制 (PRD 第 4 節規範)
       const badge = document.getElementById('act-status-badge');
