@@ -16,5 +16,5 @@
 - [前後端介面](docs/interfaces.md)
 - [流程與狀態](docs/flows.md)
 - [部署與驗收](docs/deployment-and-tests.md)
-- [歷史審查紀錄](https://github.com/TaylorShiehUSI/running-cub/blob/3c45cb6/docs/system-review-v1.md)
+- [歷史審查紀錄](docs/system-review-v1.md)
 - [GitHub CLI 登入與開 PR 示範](docs/github-cli-workflow.md)
