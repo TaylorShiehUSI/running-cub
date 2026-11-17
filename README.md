@@ -18,3 +18,4 @@
 - [部署與驗收](docs/deployment-and-tests.md)
 - [歷史審查紀錄](docs/system-review-v1.md)
 - [GitHub CLI 登入與開 PR 示範](docs/github-cli-workflow.md)
+- [設定與報名資訊流](docs/registration-information-flow.md)
